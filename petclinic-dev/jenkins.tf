@@ -1,7 +1,7 @@
 #create securit group for the tomcat
 
-resource "aws_security_group" "tomcat" {
-  name        = "tomcat"
+resource "aws_security_group" "jenkins" {
+  name        = "jenkins"
   description = "Allow SSH inbound traffic"
   vpc_id      = aws_vpc.petclinic.id
 
@@ -30,33 +30,33 @@ resource "aws_security_group" "tomcat" {
   }
 
  tags = {
-    Name = "${var.envname}-tomcat-sg"
+    Name = "${var.envname}-jenkins-sg"
   }
 }
 
 #user data to install the webapplications
 
 
-data "template_file" "user_data" {
-  template = "${file("tomcat_install.sh")}"
-  
+data "template_file" "user_data1" {
+  template = "${file("jenkins_install.sh")}"
+
 }
  
 
 
-#create tomcat instance
+#create jenkins instance
 
-resource "aws_instance" "tomcat" {
+resource "aws_instance" "jenkins" {
   ami           = var.ami
   instance_type = var.type
   key_name = aws_key_pair.cherry.id
   subnet_id = aws_subnet.tf_petclinic_prisubnet[0].id
-  vpc_security_group_ids = ["${aws_security_group.tomcat.id}"]
-  user_data = data.template_file.user_data.rendered
+  vpc_security_group_ids = ["${aws_security_group.jenkins.id}"]
+  user_data = data.template_file.user_data1.rendered
 
 
  tags = {
-    Name = "${var.envname}-tomcat"
+    Name = "${var.envname}-jenkins"
   }
 }
 
