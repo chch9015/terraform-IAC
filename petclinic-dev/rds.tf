@@ -41,6 +41,36 @@ resource "aws_security_group" "rds" {
 }
 
 
+#create subnet group
+resource "aws_db_subnet_group" "sub_group" {
+  name       = "rds-subnet-group"
+  subnet_ids = "${aws_subnet.tf_petclinic_prisubnet.*.id}"
+
+ tags = {
+    Name = "${var.envname}-rds-subnet_group"
+  }
+}
+
+#create rds
+resource "aws_db_instance" "rds" {
+  allocated_storage    = 15
+  engine               = "mysql"
+  engine_version       = "5.7"
+  instance_class       = "db.t3.micro"
+  name                 = "mydb"
+  username             = "tf_pet_db"
+  password             = "IjRJnKj2hFknimX7vkUc"
+  vpc_security_group_ids = ["${aws_security_group.rds.id}"]
+  db_subnet_group_name = "${aws_db_subnet_group.sub_group.name}"
+  multi_az             = true
+
+ tags = {
+    Name = "${var.envname}-my-mysql-5-7"
+  }
+
+}
+
+
 
 
 
