@@ -20,7 +20,7 @@ systemctl enable jenkins
 
 
 #maven installation
-wget https://mirrors.estointernet.in/apache/tomcat/tomcat-9/v9.0.50/bin/apache-tomcat-9.0.50-windows-x64.zip
+wget https://mirrors.estointernet.in/apache/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.zip
 #unzip the package
 unzip apache-maven-3.8.1-bin.zip
 #rename
